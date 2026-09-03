@@ -1,0 +1,47 @@
+schema_version: 1
+
+context:
+  name: dtool_smb
+  version: 0.1.0
+
+package:
+  name: ${{ name|lower }}
+  version: ${{ version }}
+
+source:
+  url: https://pypi.org/packages/source/${{ name[0] }}/dtool-smb/dtool-smb-${{ version }}.tar.gz
+  sha256: 88a84dc6b5f4fb7f5b63819c6e4b00a11b9e8531e748454c9306b48fcbf1b79f
+
+build:
+  number: 2
+  noarch: python
+  script: ${{ PYTHON }} -m pip install . -vv --no-deps --no-build-isolation
+
+requirements:
+  host:
+    - pip
+    - python ${{ python_min }}.*
+    - setuptools
+  run:
+    - dtoolcore >=3.17
+    - pysmb
+    - python >=${{ python_min }}
+
+tests:
+  - python:
+      imports:
+        - dtool_smb
+      pip_check: true
+      python_version:
+        - ${{ python_min }}
+        - "*"
+
+about:
+  summary: Add SMB (Server Message Block) dataset support to dtool
+  license: MIT
+  license_file: LICENSE.rst
+  homepage: https://github.com/IMTEK-Simulation/dtool-smb
+
+extra:
+  recipe-maintainers:
+    - jan-janssen
